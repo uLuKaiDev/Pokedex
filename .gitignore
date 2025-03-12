@@ -22,3 +22,6 @@ go.work
 
 # Executable
 Pokedex
+
+# Log Files
+*.log
