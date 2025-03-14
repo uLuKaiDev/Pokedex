@@ -5,15 +5,18 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
-	"github.com/uLuKaiDev/Pokedex/shared"
+	"github.com/uLuKaiDev/Pokedex/internal/pokecache"
+	//"github.com/uLuKaiDev/Pokedex/shared"
 )
 
 func main() {
 	initCommands()
 
+	cache := pokecache.NewCache(5 * time.Second)
+
 	scanner := bufio.NewScanner(os.Stdin)
-	cfg := &shared.Config{}
 	fmt.Print("Pokedex > ")
 	for scanner.Scan() {
 		text := scanner.Text()
@@ -25,7 +28,13 @@ func main() {
 
 		command, exists := commands[cleanedInput[0]]
 		if exists {
-			err := command.callback(cfg)
+			var err error
+			if len(cleanedInput) > 1 {
+				err = command.callback(cache, cleanedInput[1])
+			} else {
+				err = command.callback(cache)
+			}
+
 			if err != nil {
 				fmt.Println("Error executing command:", err)
 			}

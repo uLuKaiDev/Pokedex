@@ -5,13 +5,14 @@ import (
 	"os"
 
 	"github.com/uLuKaiDev/Pokedex/internal/pokeapi"
-	"github.com/uLuKaiDev/Pokedex/shared"
+	"github.com/uLuKaiDev/Pokedex/internal/pokecache"
+	//"github.com/uLuKaiDev/Pokedex/shared"
 )
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(c *shared.Config) error
+	callback    func(ca *pokecache.Cache, extra ...any) error
 }
 
 var commands map[string]cliCommand
@@ -38,16 +39,21 @@ func initCommands() {
 			description: "Displays previous 20 location areas",
 			callback:    pokeapi.CommandMapBack,
 		},
+		"explore": {
+			name:        "explore",
+			description: "Explore a specified location area",
+			callback:    pokeapi.CommandExplore,
+		},
 	}
 }
 
-func CommandExit(_ *shared.Config) error {
+func CommandExit(_ *pokecache.Cache, _extra ...any) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func CommandHelp(_ *shared.Config) error {
+func CommandHelp(_ *pokecache.Cache, _extra ...any) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
 	fmt.Println("")
