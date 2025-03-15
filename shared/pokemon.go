@@ -296,22 +296,24 @@ func (p *Pokemon) CatchAttempt() bool {
 	time.Sleep(2 * time.Second)
 	switch {
 	case p.BaseExperience < 25:
-		return rand.Intn(100) > 5
+		return rand.Intn(100) >= 5
 	case p.BaseExperience < 50:
-		return rand.Intn(100) > 10
+		return rand.Intn(100) >= 10
 	case p.BaseExperience < 100:
-		return rand.Intn(100) > 25
+		return rand.Intn(100) >= 25
 	case p.BaseExperience < 150:
-		return rand.Intn(100) > 30
+		return rand.Intn(100) >= 30
 	case p.BaseExperience < 200:
-		return rand.Intn(100) > 45
+		return rand.Intn(100) >= 45
 	case p.BaseExperience < 250:
-		return rand.Intn(100) > 60
+		return rand.Intn(100) >= 60
 	case p.BaseExperience < 300:
-		return rand.Intn(100) > 75
+		return rand.Intn(100) >= 75
 	case p.BaseExperience < 320:
-		return rand.Intn(100) > 90
+		return rand.Intn(100) >= 90
+	case p.BaseExperience > 320:
+		return rand.Intn(100) >= 95
 	default:
-		return rand.Intn(100) > 50
+		return rand.Intn(100) >= 50
 	}
 }

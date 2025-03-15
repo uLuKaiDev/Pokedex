@@ -58,6 +58,18 @@ func initCommands() {
 			callback:     commandCatch,
 			commandOrder: 6,
 		},
+		"inspect": {
+			name:         "inspect",
+			description:  "Inspect a Pokemon",
+			callback:     commandInspect,
+			commandOrder: 7,
+		},
+		"pokedex": {
+			name:         "pokedex",
+			description:  "Displays all caught Pokemon",
+			callback:     commandPokedex,
+			commandOrder: 8,
+		},
 	}
 }
 
@@ -180,9 +192,51 @@ func commandCatch(ca *pokecache.Cache, extra ...any) error {
 		fmt.Printf("You caught %s!\n", pok.Name)
 		shared.AddToPokedex(pok)
 		fmt.Printf("%s has been added to your Pokedex!\n", pok.Name)
+		fmt.Printf("You may now inspect it with the inspect command.\n")
 		return nil
 	}
 	fmt.Printf("%s broke free!\n", pok.Name)
 
+	return nil
+}
+
+func commandInspect(_ *pokecache.Cache, extra ...any) error {
+	if len(extra) == 0 {
+		return fmt.Errorf("specify which Pokemon you want to inspect")
+	}
+
+	inputName, ok := extra[0].(string)
+	if !ok || inputName == "" {
+		return fmt.Errorf("invalid Pokemon name")
+	}
+
+	pok, ok := shared.Pokedex[inputName]
+	if !ok {
+		return fmt.Errorf("you have not caught a %s yet", inputName)
+	}
+
+	fmt.Printf("Name: %s\n", pok.Name)
+	fmt.Printf("Height: %d\n", pok.Height)
+	fmt.Printf("Weight: %d\n", pok.Weight)
+	fmt.Printf("Stats:\n")
+	for _, stat := range pok.Stats {
+		fmt.Printf("-%s: %d\n", stat.Stat.Name, stat.BaseStat)
+	}
+	fmt.Printf("Types:\n")
+	for _, poke_type := range pok.Types {
+		fmt.Printf("- %s\n", poke_type.Type.Name)
+	}
+	return nil
+}
+
+func commandPokedex(_ *pokecache.Cache, extra ...any) error {
+	if len(shared.Pokedex) == 0 {
+		fmt.Printf("You have not caught any Pokemon yet!\n")
+		return nil
+	}
+	fmt.Print("Your Pokedex:\n")
+	for name := range shared.Pokedex {
+		fmt.Printf("- %s\n", name)
+	}
 	return nil
 }
