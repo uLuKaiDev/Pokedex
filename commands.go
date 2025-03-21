@@ -24,7 +24,7 @@ func initCommands() {
 	commands = map[string]cliCommand{
 		"help": {
 			name:         "help",
-			description:  "Displays a help message",
+			description:  "Displays all available commands, including this one!",
 			callback:     commandHelp,
 			commandOrder: 1,
 		},
@@ -36,31 +36,31 @@ func initCommands() {
 		},
 		"map": {
 			name:         "map",
-			description:  "Displays next 20 location areas",
+			description:  "Displays the next 20 location areas",
 			callback:     commandMap,
 			commandOrder: 3,
 		},
 		"mapb": {
 			name:         "mapb",
-			description:  "Displays previous 20 location areas",
+			description:  "Displays the previous 20 location areas",
 			callback:     commandMapBack,
 			commandOrder: 4,
 		},
 		"explore": {
 			name:         "explore",
-			description:  "Explore a specified location area",
+			description:  "Explore a specified location. Usage explore <location name> (e.g. Inspect mt-coronet-6f)",
 			callback:     commandExplore,
 			commandOrder: 5,
 		},
 		"catch": {
 			name:         "catch",
-			description:  "Catch a Pokemon",
+			description:  "Try to catch a Pokemon. Usage catch <Pokemon name> (e.g. catch pikachu)",
 			callback:     commandCatch,
 			commandOrder: 6,
 		},
 		"inspect": {
 			name:         "inspect",
-			description:  "Inspect a Pokemon",
+			description:  "Inspect a caught Pokemon. Usage inspect <Pokemon name> (e.g. inspect pikachu)",
 			callback:     commandInspect,
 			commandOrder: 7,
 		},
@@ -69,6 +69,18 @@ func initCommands() {
 			description:  "Displays all caught Pokemon",
 			callback:     commandPokedex,
 			commandOrder: 8,
+		},
+		"save": {
+			name:         "save",
+			description:  "Save the current state of the Pokedex:",
+			callback:     commandSave,
+			commandOrder: 9,
+		},
+		"new": {
+			name:         "new",
+			description:  "Clear your current Pokedex and start a new adventure!",
+			callback:     commandNew,
+			commandOrder: 10,
 		},
 	}
 }
@@ -238,5 +250,18 @@ func commandPokedex(_ *pokecache.Cache, extra ...any) error {
 	for name := range shared.Pokedex {
 		fmt.Printf("- %s\n", name)
 	}
+	return nil
+}
+
+func commandSave(ca *pokecache.Cache, extra ...any) error {
+	fmt.Printf("Saving the current state of the Pokedex...\n")
+	shared.SavePokedex()
+	fmt.Println("Pokedex saved!")
+	return nil
+}
+
+func commandNew(ca *pokecache.Cache, extra ...any) error {
+	fmt.Printf("Starting a new adventure...\n")
+	shared.ClearPokedex()
 	return nil
 }

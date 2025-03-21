@@ -25,3 +25,9 @@ Pokedex
 
 # Log Files
 *.log
+
+# VS Code
+.vscode/
+
+# Saves folder
+saves/

@@ -8,11 +8,12 @@ import (
 	"time"
 
 	"github.com/uLuKaiDev/Pokedex/internal/pokecache"
-	//"github.com/uLuKaiDev/Pokedex/shared"
+	"github.com/uLuKaiDev/Pokedex/shared"
 )
 
 func main() {
 	initCommands()
+	shared.CheckSavedPokedex()
 
 	cache := pokecache.NewCache(5 * time.Second)
 
