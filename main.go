@@ -15,7 +15,7 @@ func main() {
 	initCommands()
 	shared.CheckSavedPokedex()
 
-	cache := pokecache.NewCache(5 * time.Second)
+	cache := pokecache.NewCache(60 * time.Second)
 
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Print("Pokedex > ")
